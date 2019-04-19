@@ -477,12 +477,22 @@ class ConfigOverrider(object):
             value = option[option.index('=') + 1:]
             try:
                 self.__apply_single_override(dest, name, value)
+                if name[0][0] == '*':
+                    self.__apply_mult_override(dest, name[1:], value)
             except BaseException:
                 self.log.debug("Failed override: %s", traceback.format_exc())
                 self.log.error("Failed to apply override %s=%s", name, value)
                 raise
 
         dest.dump()
+
+    def __apply_mult_override(self, obj, key, replace_value):                     
+        for k, v in obj.items():
+            if isinstance(v, dict):
+                obj[k] = self.__apply_mult_override(v, key, replace_value)
+        if key in obj:
+            obj[key] = replace_value
+        return obj
 
     def __apply_single_override(self, dest, name, value):
         """

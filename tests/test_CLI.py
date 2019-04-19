@@ -314,3 +314,8 @@ class TestConfigOverrider(BZTestCase):
         self.obj.apply_overrides(['dict.^2=null'], self.config)
         self.assertEqual(self.config.get("items"), [1, 3])
         self.assertEqual(self.config.get("dict"), {"1": 1, "3": 3})
+
+    def test_override_multiple(self):        
+        self.config["dict"] = {"1": "1", "3": {"2":"2"}, "2": "3"}
+        self.obj.apply_overrides(['*2=4'], self.config)
+        self.assertEqual(self.config.get("dict"), {"1": "1", "3": {"2":"4"}, "2": "4"})

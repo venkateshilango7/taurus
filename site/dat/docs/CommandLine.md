@@ -76,6 +76,12 @@ And if you need to pass a string with quotations, you have to add an escaped lev
 bzt -o modules.jmeter.properties.name='"\"string with quotes\""' script.yaml
 ```
 
+If you need to recursively override a value by giving only chile node of the key:
+```bash
+# this will set all properties with `name` to value `newValue`.
+bzt -o *name='newValue' script.yaml
+```
+
 ## Aliases
 
 There is a way to create some config chunks and apply them from command-line like this: `bzt -gui-mode -scenario1`
